@@ -6,13 +6,23 @@
     android:layout_height="match_parent"
     tools:context=".chat.MessageActivity">
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/messageActivity_rcView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/messageActivity_btn"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
     <androidx.appcompat.widget.AppCompatEditText
         android:id="@+id/messageActivity_edt"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/messageActivity_btn"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintTop_toTopOf="@id/messageActivity_btn"
+        app:layout_constraintBottom_toBottomOf="@id/messageActivity_btn"/>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/messageActivity_btn"

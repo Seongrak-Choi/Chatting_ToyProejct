@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.chatting_toyproject.R
 import com.example.chatting_toyproject.adapter.PeopleFragmentRecyclerViewAdapter
 import com.example.chatting_toyproject.model.UserModel
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.FirebaseDatabase
@@ -43,11 +44,17 @@ class PeopleFragment : Fragment() {
 
 
     private fun getUserList(){
+        val myUid = FirebaseAuth.getInstance().currentUser!!.uid
         FirebaseDatabase.getInstance().reference.child("users").addValueEventListener(object:ValueEventListener{
             override fun onDataChange(snapshot: DataSnapshot) {
                 userModels.clear()
                 for (i in snapshot.children){
-                    userModels.add(i.getValue(UserModel::class.java)!!)
+                    val userModel = i.getValue(UserModel::class.java)!!
+
+                    if (userModel.uid == myUid) //친구 목록창에 자신은 안보이도록 설정하기 위함함
+                       continue
+
+                    userModels.add(userModel)
                 }
 
                 rcAdapter.notifyDataSetChanged()
