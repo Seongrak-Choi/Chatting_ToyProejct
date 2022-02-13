@@ -2,10 +2,8 @@ package com.example.chatting_toyproject.chat
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Button
 import android.widget.EditText
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.chatting_toyproject.R
@@ -14,11 +12,7 @@ import com.example.chatting_toyproject.model.ChatModel
 import com.example.chatting_toyproject.model.Comment
 import com.example.chatting_toyproject.model.UserModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.database.DataSnapshot
-import com.google.firebase.database.DatabaseError
-import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.ValueEventListener
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.database.*
 
 class MessageActivity : AppCompatActivity() {
     private lateinit var destinationUid: String
@@ -61,14 +55,13 @@ class MessageActivity : AppCompatActivity() {
                 val comment = Comment()
                 comment.uid = uid
                 comment.message = editText.text.toString()
-
+                comment.timeStamp = ServerValue.TIMESTAMP
                 FirebaseDatabase.getInstance().reference.child("chatRooms").child(chatRoomUid)
                     .child("comments").push().setValue(comment).addOnCompleteListener {
                         editText.setText("")
                     }
             }
         }
-
 
         checkChatRoom()
     }
@@ -80,8 +73,6 @@ class MessageActivity : AppCompatActivity() {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     for (item in snapshot.children) {
                         val chatModel = item.getValue(ChatModel::class.java)
-                        println("chatModel:$chatModel")
-                        println("item:$item")
 
                         if (chatModel!!.users.containsKey(destinationUid)) {
                             chatRoomUid = item.key.toString() //push로 만든 방 key값을 불러오는 코드인 듯
@@ -108,7 +99,6 @@ class MessageActivity : AppCompatActivity() {
 
                 override fun onCancelled(error: DatabaseError) {
                 }
-
             })
     }
 
@@ -133,5 +123,10 @@ class MessageActivity : AppCompatActivity() {
                 }
 
             })
+    }
+
+    override fun onBackPressed() {
+        finish()
+        overridePendingTransition(R.anim.from_left,R.anim.to_right)
     }
 }

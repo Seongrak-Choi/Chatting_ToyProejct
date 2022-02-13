@@ -62,7 +62,8 @@ class SplashActivity : AppCompatActivity() {
 
     private fun displayMessage() {
         val splash_background = remoteConfig.getString("splash_background")
-        val caps = remoteConfig.getBoolean("splash_message_caps")
+        //val caps = remoteConfig.getBoolean("splash_message_caps")
+        val caps = false
         val splash_message = remoteConfig.getString("splash_message")
 
         rootLayout.setBackgroundColor(Color.parseColor(splash_background))

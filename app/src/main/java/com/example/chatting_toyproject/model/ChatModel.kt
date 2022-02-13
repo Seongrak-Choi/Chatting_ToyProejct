@@ -6,6 +6,7 @@ data class ChatModel(
 )
 
 data class Comment(
-    var uid : String ="",
-    var message : String ="",
+    var uid: String ="",
+    var message: String ="",
+    var timeStamp : Any ?= null
 )
